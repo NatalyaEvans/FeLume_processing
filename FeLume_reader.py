@@ -53,14 +53,14 @@ if 'data' in globals(): #data is the object that concatenates all of the cnv val
 for entry in listofout: #loop through all the files
         run=pd.read_csv(entry, sep=',',header=None) # read the csv
         check=run>1E8 # create a dataframe that's for finding the timestamp
-        timestamp=np.nonzero(check[0]) # find the timestamp
+        # timestamp=np.nonzero(check[0]) # find the timestamp
+        timestamp=np.flatnonzero(check[0])
         # now average 50 time points before the time stamp, and find the stdev for fun too
-        temp=np.array([np.mean(run[timestamp[0][0]-51:timestamp[0][0]-1])[0],np.std(run[timestamp[0][0]-51:timestamp[0][0]-1])[0]])        
+        temp=np.array([np.mean(run[timestamp[0]-51:timestamp[0]-1])[0],np.std(run[timestamp[0]-51:timestamp[0]-1])[0]])        
         if not 'data' in globals(): #this is the base case to generate the object that will be concatenated
             data=temp #defines the concatenation variable
         else:
             data=np.vstack([data, temp]) #if the concatentation variable exists, concatenate to it
-        
 
  # %% 6. Output the data file  
 data2=pd.DataFrame(data,columns=['Mean','Stdev']) #converts your data into a panda dataframe to make the output xlsx file easier to generate
